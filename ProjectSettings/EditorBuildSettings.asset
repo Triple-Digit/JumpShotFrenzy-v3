@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Main Menu.unity
+    guid: 2f1b04a867d620c428f1bf9bc5ed6d58
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Character Select.unity
+    guid: 4248614d56333c34892f4d9641b10186
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Movement Gym.unity
+    guid: 82492629a9f7c66439f3bc9f718d526a
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Arena 1.unity
+    guid: 5fcf50fce84e1124bb0788aa2e44c264
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Win Scene.unity
+    guid: a84a111ca745b0d418a3e6969145ec64
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Arena 2.unity
+    guid: 690dc6588ea9fc1439721814a1c3e500
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Arena 3.unity
+    guid: e70d40df8c8ea9440984862f5b5436c6
+  m_configObjects: {}
