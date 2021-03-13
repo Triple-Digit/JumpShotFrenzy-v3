@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project Files/Scenes/Character Select.unity
     guid: 4248614d56333c34892f4d9641b10186
-  - enabled: 1
+  - enabled: 0
     path: Assets/Project Files/Scenes/Movement Gym.unity
     guid: 82492629a9f7c66439f3bc9f718d526a
   - enabled: 1
