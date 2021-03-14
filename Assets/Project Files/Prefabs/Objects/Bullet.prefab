@@ -71,6 +71,7 @@ MonoBehaviour:
   m_moveDirection: 0
   m_moveSpeed: 15
   m_destroyTime: 2
+  m_impactFx: {fileID: 3945481146955100069, guid: bc66ced355069294a8e6e7714ac99e25, type: 3}
 --- !u!61 &4547336222241086921
 BoxCollider2D:
   m_ObjectHideFlags: 0

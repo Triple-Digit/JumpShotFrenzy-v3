@@ -68,7 +68,10 @@ public class GameManager : MonoBehaviour
 
     public void RemoveActivePlayer(AgentManager player)
     {
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>().m_shaking = false;
         instance.m_activePlayers.Remove(player);
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraControl>().m_shaking = true;
+        
     }
 
     public int CheckActivePlayers()

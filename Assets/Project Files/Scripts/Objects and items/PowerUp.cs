@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-    public bool m_invicibility, m_doubleJump;
+    public bool m_invicibility, m_doubleJump, m_multiShot;
     public float m_powerUpLength = 5f;
-
-
 
     public void DestroyObject()
     {
@@ -32,6 +30,10 @@ public class PowerUp : MonoBehaviour
         if (m_doubleJump)
         {
             player.GetComponent<PlayerController>().ExtraJump(m_powerUpLength);
+        }
+        if (m_multiShot)
+        {
+            player.GetComponent<PlayerController>().MultiShot(m_powerUpLength);
         }
     }
 }

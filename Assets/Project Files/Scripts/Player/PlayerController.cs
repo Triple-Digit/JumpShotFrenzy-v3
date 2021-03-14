@@ -5,8 +5,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool m_canControll;
-    [SerializeField] ParticleSystem m_dust;
+    
+    [HideInInspector] public bool m_canControll;
+    
+    [Header("FXs")]
+    [SerializeField] ParticleSystem m_dust, m_muzzleFlash;
 
     [Header("Movement Variables")]
     [SerializeField] GameObject m_spriteHolder;
@@ -26,8 +29,7 @@ public class PlayerController : MonoBehaviour
     float m_coyoteTimer;
     bool m_grounded;
     [SerializeField] int m_jumpCount = 0;
-    [SerializeField] float m_extraJumpTimer = 5000;
-
+    [SerializeField] float m_extraJumpTimer = 0;
     
     [Header("Front Flip Variables")]
     [SerializeField] bool m_flipping = false;
@@ -38,11 +40,12 @@ public class PlayerController : MonoBehaviour
     [Header("Shooting Variables")]
     [SerializeField] Transform m_shootingPoint;
     [SerializeField] GameObject m_bullet;
-    [SerializeField] int m_ammo = 1;
+    [SerializeField] int m_ammo = 5;
     [SerializeField] int m_currentAmmo = 1;
     public float m_fireRate = 0.25f;
     float m_firerTimer;
-
+    bool m_isShooting;
+    [SerializeField] float m_multiShotTimer = 0f;
 
     private void Awake()
     {        
@@ -53,14 +56,11 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-    }
-
-    
+    }   
 
     private void FixedUpdate()
     {
-        FrontFlip();
-        FireRate();
+        FrontFlip();        
     }
 
     private void Update()
@@ -68,6 +68,9 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         CheckIfGrounded();
         ExtraJumpTimer();
+        MultiShotTimer();
+        FireRate();
+        Shooting();
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -99,7 +102,7 @@ public class PlayerController : MonoBehaviour
         {
             m_facingRight = !m_facingRight;
             m_direction *= -1f;
-            CreateDust();
+            PlayParticle(m_dust);
         }
         m_spriteHolder.transform.localScale = new Vector3(m_direction, 1f, 1f);
         
@@ -115,7 +118,7 @@ public class PlayerController : MonoBehaviour
                 {
                     m_body.velocity = new Vector2(m_body.velocity.x, m_jumpForce);
                     m_coyoteTimer = -1f;
-                    CreateDust();                    
+                    PlayParticle(m_dust);
                 }
                 if (context.canceled)
                 {
@@ -127,8 +130,8 @@ public class PlayerController : MonoBehaviour
             {
                 if (context.started)
                 {
-                    m_body.velocity = new Vector2(m_body.velocity.x, m_jumpForce);                    
-                    CreateDust();
+                    m_body.velocity = new Vector2(m_body.velocity.x, m_jumpForce);
+                    PlayParticle(m_dust);
                     m_jumpCount--;
                 }
                 if (context.canceled)
@@ -145,7 +148,6 @@ public class PlayerController : MonoBehaviour
         m_extraJumpTimer += duration;
     }
 
-
     void ExtraJumpTimer()
     {
         if (m_extraJumpTimer >= 0f)
@@ -158,40 +160,6 @@ public class PlayerController : MonoBehaviour
             m_extraJump = 0;
         }
     }
-
-    void FireRate()
-    {
-        if(m_firerTimer > 0)
-        {
-            m_firerTimer -= Time.deltaTime;
-        }
-    }
-
-    void CheckIfGrounded()
-    {
-        m_grounded = Physics2D.OverlapCircle(m_groundCheckPosition.position, m_groundCheckRadius, m_groundLayers);
-        if (m_grounded)
-        {
-            m_currentAmmo = m_ammo;
-            m_coyoteTimer = m_coyoteTime;
-            m_jumpCount = m_extraJump;
-        }
-        else
-        {
-            m_coyoteTimer -= Time.deltaTime;
-        }        
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (m_groundCheckPosition == null) return;
-        Gizmos.DrawWireSphere(m_groundCheckPosition.position, m_groundCheckRadius);
-    }
-
-    public void Shoot(InputAction.CallbackContext context)
-    {
-        if (context.performed) Shooting();
-    }       
 
     void FrontFlip()
     {
@@ -229,32 +197,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Shooting()
-    {        
-        if (!m_grounded)
+    void CheckIfGrounded()
+    {
+        m_grounded = Physics2D.OverlapCircle(m_groundCheckPosition.position, m_groundCheckRadius, m_groundLayers);
+        if (m_grounded)
         {
-            if(m_currentAmmo > 0)
-            {
-                m_currentAmmo--;
-                if (!m_facingRight)
-                {
-                    GameObject bullet = Instantiate(m_bullet, new Vector2(m_shootingPoint.transform.position.x, m_shootingPoint.transform.position.y), m_spriteHolder.transform.rotation);
-                    bullet.GetComponent<Bullet>().ChangeDirection();
-                }
-                else
-                {
-                    GameObject bullet = Instantiate(m_bullet, new Vector2(m_shootingPoint.transform.position.x, m_shootingPoint.transform.position.y), m_spriteHolder.transform.rotation);
-                }
-            }
-            
+            m_currentAmmo = m_ammo;
+            m_coyoteTimer = m_coyoteTime;
+            m_jumpCount = m_extraJump;
         }
-
+        else
+        {
+            m_coyoteTimer -= Time.deltaTime;
+        }        
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        if (m_groundCheckPosition == null) return;
+        Gizmos.DrawWireSphere(m_groundCheckPosition.position, m_groundCheckRadius);
+    }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.tag == "Platform")
+        if (other.gameObject.tag == "Platform")
         {
             transform.parent = other.gameObject.transform;
         }
@@ -265,8 +231,62 @@ public class PlayerController : MonoBehaviour
         transform.parent = null;
     }
 
-    void CreateDust()
+    public void Shoot(InputAction.CallbackContext context)
     {
-        m_dust.Play();
+        if (context.performed) m_isShooting = true;
+        if(context.canceled) m_isShooting = false;
+    }
+
+    void FireRate()
+    {
+        if (m_firerTimer > 0)
+        {
+            m_firerTimer -= Time.deltaTime;
+        }
+    }    
+
+    void Shooting()
+    {        
+        if (!m_grounded && m_isShooting)
+        {
+            if(m_currentAmmo > 0 && m_firerTimer <= 0)
+            {
+                m_firerTimer = m_fireRate;
+                m_currentAmmo--;
+                if (!m_facingRight)
+                {
+                    GameObject bullet = Instantiate(m_bullet, new Vector2(m_shootingPoint.transform.position.x, m_shootingPoint.transform.position.y), m_spriteHolder.transform.rotation);
+                    bullet.GetComponent<Bullet>().ChangeDirection();
+                }
+                else
+                {
+                    GameObject bullet = Instantiate(m_bullet, new Vector2(m_shootingPoint.transform.position.x, m_shootingPoint.transform.position.y), m_spriteHolder.transform.rotation);
+                }
+                PlayParticle(m_muzzleFlash);
+            }            
+        }
+    }
+
+    public void MultiShot(float duration)
+    {
+        m_extraJumpTimer += duration;
+    }
+
+    void MultiShotTimer()
+    {
+        if (m_multiShotTimer >= 0f)
+        {
+            m_multiShotTimer -= Time.deltaTime;
+            m_ammo = 3;
+        }
+        else
+        {
+            m_ammo = 1;
+        }
+    }
+
+    void PlayParticle(ParticleSystem particle)
+    {
+        particle.Play();
     }
 }

@@ -66,6 +66,7 @@ public class AgentManager : MonoBehaviour
         if (m_invincibleCounter <= 0f)
         {
             m_character.SetActive(false);
+            
             Instantiate(m_explosion, new Vector2(transform.position.x, transform.position.y), transform.rotation);
             this.gameObject.SetActive(false);
         }

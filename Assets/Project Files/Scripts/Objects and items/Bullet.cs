@@ -7,6 +7,8 @@ public class Bullet : MonoBehaviour
     public bool m_moveDirection = false; //false = move right, true = move left
     public float m_moveSpeed;
     public float m_destroyTime;
+    public GameObject m_impactFx;
+
     
 
     private void Awake()
@@ -46,8 +48,9 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-        //add feedback
+
+        GameObject fx = Instantiate(m_impactFx, transform.position, Quaternion.identity);
+        Destroy(fx, 5);
         DestroyObject();
     }
 

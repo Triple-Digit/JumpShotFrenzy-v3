@@ -16,6 +16,7 @@ public class Platform : MonoBehaviour
     [Header("Components")]
     [SerializeField] SpriteRenderer m_sprite;
     [SerializeField] BoxCollider2D m_collider;
+    [SerializeField] 
 
 
     private void Update()
