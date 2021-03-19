@@ -24,8 +24,9 @@ public class UIController : MonoBehaviour
     }
     #endregion
 
+
     [SerializeField] string m_mainMenu;
-    [SerializeField] GameObject m_pause;
+    [SerializeField] GameObject m_pause, m_loadingImage;
     public GameObject m_firstButtonInPause;
     
     void Update()

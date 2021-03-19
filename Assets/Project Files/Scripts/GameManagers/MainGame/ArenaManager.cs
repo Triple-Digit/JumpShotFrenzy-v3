@@ -76,7 +76,8 @@ public class ArenaManager : MonoBehaviour
             m_timer.gameObject.SetActive(false);
             
             if(m_matchtime <= 0)
-            {
+            { 
+
                 m_start = true;
                 GameManager.instance.m_canFight = true;
                 foreach (AgentManager player in GameManager.instance.m_activePlayers)
