@@ -31,7 +31,7 @@ public class CameraControl : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (GameManager.instance.m_activePlayers.Count == 0 || m_shaking) return;
+        if (GameManager.instance.m_activePlayers.Count == 0) return;
         MoveCamera();
         Zoom();
     }
@@ -62,7 +62,10 @@ public class CameraControl : MonoBehaviour
         var bounds = new Bounds(GameManager.instance.m_activePlayers[0].gameObject.transform.position, Vector3.zero);
         for (int i = 0; i < GameManager.instance.m_activePlayers.Count; i++)
         {
-            bounds.Encapsulate(GameManager.instance.m_activePlayers[i].transform.position);
+            if (GameManager.instance.m_activePlayers[i].gameObject.activeInHierarchy)
+            {
+                bounds.Encapsulate(GameManager.instance.m_activePlayers[i].transform.position);
+            }
         }
         if(bounds.size.x > bounds.size.y)
         {
@@ -84,17 +87,17 @@ public class CameraControl : MonoBehaviour
         var bounds = new Bounds(GameManager.instance.m_activePlayers[0].gameObject.transform.position, Vector3.zero);
         for (int i = 0; i < GameManager.instance.m_activePlayers.Count; i++)
         {
-            bounds.Encapsulate(GameManager.instance.m_activePlayers[i].transform.position);
+            if(GameManager.instance.m_activePlayers[i].gameObject.activeInHierarchy)
+            {
+                bounds.Encapsulate(GameManager.instance.m_activePlayers[i].transform.position);
+            }            
         }
-
         return bounds.center;
     }
 
     public void CameraShake()
-    {
-        
-        transform.DOShakePosition(m_duration, m_strength, m_virbrato, m_randomness, false).OnComplete(() => { m_shaking = false; });
-        
+    {        
+        transform.DOShakePosition(m_duration, m_strength, m_virbrato, m_randomness, false).OnComplete(() => { m_shaking = false; });        
     }
 
     

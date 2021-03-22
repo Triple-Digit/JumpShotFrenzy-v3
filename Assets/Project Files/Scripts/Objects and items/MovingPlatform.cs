@@ -5,7 +5,7 @@ using UnityEngine;
 public class MovingPlatform : MonoBehaviour
 {
     
-    [SerializeField] float m_moveSpeed = 3f, m_destroyTime = 5f;
+    [SerializeField] float m_moveSpeed = 3f, m_destroyTime = 15f;
 
 
     
@@ -23,6 +23,7 @@ public class MovingPlatform : MonoBehaviour
 
     void Move()
     {
+        if (!GameManager.instance.m_canFight) return;
         transform.position = new Vector2(transform.position.x, transform.position.y - m_moveSpeed * Time.deltaTime);
     }
 

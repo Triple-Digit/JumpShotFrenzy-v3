@@ -11,9 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project Files/Scenes/Character Select.unity
     guid: 4248614d56333c34892f4d9641b10186
-  - enabled: 0
-    path: Assets/Project Files/Scenes/Movement Gym.unity
-    guid: 82492629a9f7c66439f3bc9f718d526a
   - enabled: 1
     path: Assets/Project Files/Scenes/Arena 1.unity
     guid: 5fcf50fce84e1124bb0788aa2e44c264
@@ -26,4 +23,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project Files/Scenes/Arena 3.unity
     guid: e70d40df8c8ea9440984862f5b5436c6
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Climb small.unity
+    guid: b9adf49a8d5273d4dac37f0bedefdbed
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Pivot small.unity
+    guid: 832872b6c4540e941a1f5476987d8d5a
+  - enabled: 1
+    path: Assets/Project Files/Scenes/Springy small.unity
+    guid: 0d8f60756a829ff4b829d57ccb5f0d44
   m_configObjects: {}

@@ -25,7 +25,6 @@ public class ArenaManager : MonoBehaviour
 
     void Update()
     {
-
         TrackMatch();
         CountDown();
     }
@@ -42,7 +41,7 @@ public class ArenaManager : MonoBehaviour
                 m_spawnpoints.RemoveAt(randomPoint);
             }
         }
-        m_matchtime = 5f;
+        m_matchtime = 3f;
     }
 
     void TrackMatch()

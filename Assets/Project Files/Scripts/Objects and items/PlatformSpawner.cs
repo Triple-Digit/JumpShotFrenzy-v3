@@ -6,14 +6,19 @@ public class PlatformSpawner : MonoBehaviour
 {
     [SerializeField] GameObject m_platforms;
     public float m_spawnTime = 3f;
+    float m_timer;
     [SerializeField] bool m_gameStarted;
 
 
-
-    private void Start()
+    private void Update()
     {
-        m_gameStarted = true;
-        StartCoroutine(TriggerSpawn());
+        m_gameStarted = GameManager.instance.m_canFight;
+        m_timer -= Time.deltaTime;
+        if(m_gameStarted && m_timer <= 0f)
+        {
+            m_timer = m_spawnTime;
+            Spawn();
+        }
     }
 
     void Spawn()
@@ -21,13 +26,6 @@ public class PlatformSpawner : MonoBehaviour
         Instantiate(m_platforms, gameObject.transform);
     }
 
-    IEnumerator TriggerSpawn()
-    {
-        while(m_gameStarted)
-        {
-            yield return new WaitForSeconds(m_spawnTime);
-            Spawn();
-        }
-    }
+    
 
 }

@@ -234,7 +234,7 @@ public class PlayerController : MonoBehaviour
     public void Shoot(InputAction.CallbackContext context)
     {
         if (context.performed) m_isShooting = true;
-        if(context.canceled) m_isShooting = false;
+        if (context.canceled) m_isShooting = false;
     }
 
     void FireRate()
