@@ -5,17 +5,25 @@ using TMPro;
 
 public class ArenaManager : MonoBehaviour
 {
+    [Header("Main Data")]
     public List<Transform> m_spawnpoints = new List<Transform>();
     [SerializeField] bool m_roundOver;
     public bool m_start, m_suddenDeath, m_stopTimer;
 
+    [Header("UI Data")]
     [SerializeField] TMP_Text m_playerWinText, m_countDownTimer, m_timer;
     [SerializeField] float m_totalMatchTime = 180f;
     float m_matchtime;
 
+    [Header("Deathmatch data")]
     [SerializeField] GameObject m_bullets;
     [SerializeField] float m_spawnTime;
     Vector2 m_screenBounds;
+
+    [Header("Power Up Data")]
+    [SerializeField] GameObject[] m_powerUps;
+    [SerializeField] float m_powerUpSpawnRate = 15f;
+    float m_spawnPowerUpTimer;
 
     private void Start()
     {
@@ -27,6 +35,7 @@ public class ArenaManager : MonoBehaviour
     {
         TrackMatch();
         CountDown();
+        SpawnPowerUp();
     }
 
     void SetUp()
@@ -54,7 +63,6 @@ public class ArenaManager : MonoBehaviour
             StartCoroutine(EndRoundCo());
         }
     }
-
 
     IEnumerator EndRoundCo()
     {
@@ -120,5 +128,19 @@ public class ArenaManager : MonoBehaviour
         a.transform.position = new Vector2(Random.Range(-m_screenBounds.x, m_screenBounds.x), m_screenBounds.y * 2);
     }
 
+    void SpawnPowerUp()
+    {
+        if (!GameManager.instance.m_canFight) return;
+        if(m_spawnPowerUpTimer <= 0)
+        {
+            int randomPoint = Random.Range(0, m_spawnpoints.Count);
+            Instantiate(m_powerUps[Random.Range(0, m_powerUps.Length)], m_spawnpoints[randomPoint].position, m_spawnpoints[randomPoint].rotation);
+            m_spawnPowerUpTimer = m_powerUpSpawnRate * Random.Range(0.75f, 1.25f);
+        }
+        else
+        {
+            m_spawnPowerUpTimer -= Time.deltaTime;
+        }
+    }
 
 }
