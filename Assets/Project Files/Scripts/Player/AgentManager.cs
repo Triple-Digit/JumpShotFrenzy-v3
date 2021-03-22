@@ -70,8 +70,7 @@ public class AgentManager : MonoBehaviour
             Camera.main.GetComponent<CameraControl>().m_shaking = true;
             Instantiate(m_explosion, new Vector2(transform.position.x, transform.position.y), transform.rotation);
             this.gameObject.SetActive(false);
-        }
-            
+        }            
     }
 
     void DisplayName()
