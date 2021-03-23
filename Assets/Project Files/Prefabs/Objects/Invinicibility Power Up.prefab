@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 136693169006436336}
   - component: {fileID: 136693169006436339}
   - component: {fileID: 1943627177658871200}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,9 +108,9 @@ GameObject:
   - component: {fileID: 136693169886310208}
   - component: {fileID: 136693169886310209}
   - component: {fileID: 136693169886310238}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Invinicibility Power Up
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

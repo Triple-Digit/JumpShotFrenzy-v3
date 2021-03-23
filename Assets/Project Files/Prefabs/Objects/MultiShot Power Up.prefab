@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8321588322076632030}
   - component: {fileID: 5278812196038752096}
   - component: {fileID: 5069989704442581871}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,9 +108,9 @@ GameObject:
   - component: {fileID: 6040394849651853886}
   - component: {fileID: 6040394849651853825}
   - component: {fileID: 6040394849651853827}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MultiShot Power Up
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Hazard
   - Platform
+  - PowerUp
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - KnockBack
   - Hazard
   - EndBullet
-  - 
+  - PowerUp
   - 
   - 
   - 

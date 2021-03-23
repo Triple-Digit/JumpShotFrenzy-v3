@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
-
     Camera m_camera;
     [Header("Movement")]
     [SerializeField] Vector3 m_offset;
     [SerializeField] float m_smoothTime = 0.5f;
     Vector3 m_velocity;
 
+    [Header("Zoom")]
     [SerializeField] float m_maxZoom = 10f;
     [SerializeField] float m_minZoom = 5f;
     [SerializeField] float m_zoomLimiter = 50f;
@@ -22,7 +22,8 @@ public class CameraControl : MonoBehaviour
     [SerializeField] float m_strength;
     [SerializeField] int m_virbrato;
     [SerializeField] float m_randomness;
-    public bool m_shaking;
+    [HideInInspector] public bool m_shaking, m_suddenDeath;
+
 
     private void Start()
     {
@@ -30,8 +31,8 @@ public class CameraControl : MonoBehaviour
     }
 
     private void LateUpdate()
-    {
-        if (GameManager.instance.m_activePlayers.Count == 0) return;
+    {        
+        if (GameManager.instance.m_activePlayers.Count == 0 || m_suddenDeath) return;
         MoveCamera();
         Zoom();
     }
@@ -39,7 +40,6 @@ public class CameraControl : MonoBehaviour
     private void Update()
     {
         if (m_shaking) CameraShake();
-
     }
 
     void MoveCamera()
@@ -97,7 +97,17 @@ public class CameraControl : MonoBehaviour
 
     public void CameraShake()
     {        
-        transform.DOShakePosition(m_duration, m_strength, m_virbrato, m_randomness, false).OnComplete(() => { m_shaking = false; });        
+        transform.DOShakePosition(m_duration, m_strength, m_virbrato, m_randomness, false).OnComplete(() => { m_shaking = false; if (m_suddenDeath) { SuddenDeathMode(); } });        
+    }
+
+    public void SuddenDeathMode()
+    {
+        if(!m_suddenDeath)
+        {
+            m_suddenDeath = true;
+        }        
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(0, 0, -10f), ref m_velocity, m_smoothTime);
+        m_camera.orthographicSize = Mathf.Lerp(m_camera.orthographicSize, 10f, Time.deltaTime);        
     }
 
     

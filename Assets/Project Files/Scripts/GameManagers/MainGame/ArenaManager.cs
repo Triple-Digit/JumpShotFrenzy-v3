@@ -22,14 +22,13 @@ public class ArenaManager : MonoBehaviour
 
     [Header("Power Up Data")]
     [SerializeField] GameObject[] m_powerUps;
-    [SerializeField] float m_powerUpSpawnRate = 15f;
+    [SerializeField] float m_powerUpSpawnRate = 25f;
     float m_spawnPowerUpTimer;
 
     private void Start()
     {
         SetUp();
     }
-
 
     void Update()
     {
@@ -59,6 +58,7 @@ public class ArenaManager : MonoBehaviour
         {
             m_suddenDeath = false;
             GameManager.instance.m_canFight = false;
+            Camera.main.GetComponent<CameraControl>().m_suddenDeath = false;
             m_roundOver = true;
             StartCoroutine(EndRoundCo());
         }
@@ -84,7 +84,6 @@ public class ArenaManager : MonoBehaviour
             
             if(m_matchtime <= 0)
             { 
-
                 m_start = true;
                 GameManager.instance.m_canFight = true;
                 foreach (AgentManager player in GameManager.instance.m_activePlayers)
@@ -106,7 +105,8 @@ public class ArenaManager : MonoBehaviour
                 m_playerWinText.text = "Sudden Death";                
                 m_suddenDeath = true;
                 m_stopTimer = true;
-                StartCoroutine(ActivateSuddenDeath());
+                StartCoroutine(ActivateSuddenDeath());                
+                Camera.main.GetComponent<CameraControl>().SuddenDeathMode();
             }
             m_timer.text = Mathf.CeilToInt(m_matchtime).ToString();
         }        
@@ -126,6 +126,8 @@ public class ArenaManager : MonoBehaviour
         m_screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
         GameObject a = Instantiate(m_bullets) as GameObject;
         a.transform.position = new Vector2(Random.Range(-m_screenBounds.x, m_screenBounds.x), m_screenBounds.y * 2);
+        Camera.main.GetComponent<CameraControl>().m_shaking = false;
+        Camera.main.GetComponent<CameraControl>().m_shaking = true;
     }
 
     void SpawnPowerUp()

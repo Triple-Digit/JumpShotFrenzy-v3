@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2204991837816858130}
   - component: {fileID: 2641246423369953964}
   - component: {fileID: 3150748287111206565}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,9 +108,9 @@ GameObject:
   - component: {fileID: 4482848567459188722}
   - component: {fileID: 4482848567459188685}
   - component: {fileID: 4482848567459188687}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Double Jump Power Up
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

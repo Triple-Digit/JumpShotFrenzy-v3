@@ -218,18 +218,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(m_groundCheckPosition.position, m_groundCheckRadius);
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.tag == "Platform")
-        {
-            transform.parent = other.gameObject.transform;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        transform.parent = null;
-    }
+    
 
     public void Shoot(InputAction.CallbackContext context)
     {
@@ -269,7 +258,7 @@ public class PlayerController : MonoBehaviour
 
     public void MultiShot(float duration)
     {
-        m_extraJumpTimer += duration;
+        m_multiShotTimer += duration;
     }
 
     void MultiShotTimer()
