@@ -596,7 +596,7 @@ MonoBehaviour:
   m_dust: {fileID: 9216360923708788386}
   m_muzzleFlash: {fileID: 1830629099783706513}
   m_spriteHolder: {fileID: 3066833045499033807}
-  horizontalDamping: 0.99
+  horizontalDamping: 0.98
   m_jumpForce: 18
   m_groundCheckPosition: {fileID: 3066833045243824929}
   m_groundCheckRadius: 0.23

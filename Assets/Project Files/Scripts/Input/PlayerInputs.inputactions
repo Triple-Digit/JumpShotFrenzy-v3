@@ -1,5 +1,5 @@
 {
-    "name": "Player",
+    "name": "PlayerInputs",
     "maps": [
         {
             "name": "Player",
@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "6ad17f99-aad3-4a0a-b2e1-6c2adc4f52b7",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -15,7 +15,7 @@
                 },
                 {
                     "name": "Look",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "dd3be94f-8a6b-404b-8cde-5a535838a711",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -35,7 +35,7 @@
                     "id": "1d7670d5-e529-4def-ace4-1588bf871bc2",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 }
             ],
             "bindings": [

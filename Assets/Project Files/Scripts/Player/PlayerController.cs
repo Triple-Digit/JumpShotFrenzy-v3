@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     bool m_grounded;
     [SerializeField] int m_jumpCount = 0;
     [SerializeField] float m_extraJumpTimer = 0;
+    float m_bounceVel;
     
     [Header("Front Flip Variables")]
     [SerializeField] bool m_flipping = false;
@@ -47,10 +49,38 @@ public class PlayerController : MonoBehaviour
     bool m_isShooting;
     [SerializeField] float m_multiShotTimer = 0f;
 
+    private PlayerInputs m_PlayerInputs;
+
     private void Awake()
     {        
         m_body = GetComponent<Rigidbody2D>();
         m_canControll = true;
+
+        /*
+        m_PlayerInputs = new PlayerInputs();
+
+        m_PlayerInputs.Player.Move.performed -= Move;
+        m_PlayerInputs.Player.Move.performed += Move;
+
+        m_PlayerInputs.Player.Jump.performed -= Jump;
+        m_PlayerInputs.Player.Jump.performed += Jump;
+
+        m_PlayerInputs.Player.Fire.performed -= Shoot;
+        m_PlayerInputs.Player.Fire.performed += Shoot;
+
+
+        m_PlayerInputs.Player.Look.performed -= Look;
+        m_PlayerInputs.Player.Look.performed += Look;
+
+        m_PlayerInputs.Enable();
+        */
+    }
+
+    private Vector2 m_LookDirection;
+    private Vector2 m_LastLookDirection;
+    public void Look(InputAction.CallbackContext obj)
+    {
+        m_LookDirection = obj.ReadValue<Vector2>();
     }
 
     private void Start()
@@ -71,12 +101,26 @@ public class PlayerController : MonoBehaviour
         MultiShotTimer();
         FireRate();
         Shooting();
+
+        /*
+        if (m_LookDirection == Vector2.zero)
+        {
+            m_spriteHolder.transform.right = new Vector2(m_direction,0);
+        }
+        else
+        {
+            m_spriteHolder.transform.right = m_LookDirection;
+            m_LastLookDirection = m_LookDirection;
+        }
+        */
     }
 
     public void Move(InputAction.CallbackContext context)
     {
         m_input = context.ReadValue<Vector2>().x;
     }
+
+    
 
     void MovePlayer()
     {
@@ -116,7 +160,7 @@ public class PlayerController : MonoBehaviour
             {                
                 if (context.started)
                 {
-                    m_body.velocity = new Vector2(m_body.velocity.x, m_jumpForce);
+                    m_body.velocity = new Vector2(m_body.velocity.x, m_jumpForce + m_bounceVel);
                     m_coyoteTimer = -1f;
                     PlayParticle(m_dust);
                 }
@@ -130,7 +174,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (context.started)
                 {
-                    m_body.velocity = new Vector2(m_body.velocity.x, m_jumpForce);
+                    m_body.velocity = new Vector2(m_body.velocity.x, m_jumpForce + m_bounceVel);
                     PlayParticle(m_dust);
                     m_jumpCount--;
                 }
@@ -197,14 +241,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private Collider2D m_GroundedPlatform;
     void CheckIfGrounded()
     {
-        m_grounded = Physics2D.OverlapCircle(m_groundCheckPosition.position, m_groundCheckRadius, m_groundLayers);
+        m_GroundedPlatform = null;
+        m_GroundedPlatform = Physics2D.OverlapCircle(m_groundCheckPosition.position, m_groundCheckRadius, m_groundLayers);
+        m_grounded = m_GroundedPlatform != null;
+
         if (m_grounded)
         {
             m_currentAmmo = m_ammo;
             m_coyoteTimer = m_coyoteTime;
             m_jumpCount = m_extraJump;
+
+            m_bounceVel = 0;
+            if(m_GroundedPlatform.attachedRigidbody != null)
+            {
+                if (m_GroundedPlatform.attachedRigidbody.velocity.y > 0)
+                {
+                    m_bounceVel = m_GroundedPlatform.attachedRigidbody.velocity.y;
+                    m_bounceVel = Mathf.Clamp(m_bounceVel, 0f, 10f);
+                }
+            }
+            
+            
+            //  m_GroundedPlatform.attachedRigidbody.velocity.y;
         }
         else
         {

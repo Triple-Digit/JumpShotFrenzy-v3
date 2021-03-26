@@ -12,7 +12,7 @@ public class ArenaManager : MonoBehaviour
 
     [Header("UI Data")]
     [SerializeField] TMP_Text m_playerWinText, m_countDownTimer, m_timer;
-    [SerializeField] float m_totalMatchTime = 180f;
+    [SerializeField] float m_totalMatchTime = 20f;
     float m_matchtime;
 
     [Header("Deathmatch data")]
@@ -126,8 +126,11 @@ public class ArenaManager : MonoBehaviour
         m_screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
         GameObject a = Instantiate(m_bullets) as GameObject;
         a.transform.position = new Vector2(Random.Range(-m_screenBounds.x, m_screenBounds.x), m_screenBounds.y * 2);
-        Camera.main.GetComponent<CameraControl>().m_shaking = false;
-        Camera.main.GetComponent<CameraControl>().m_shaking = true;
+        if(!Camera.main.GetComponent<CameraControl>().m_shaking)
+        {
+            Camera.main.GetComponent<CameraControl>().m_shaking = true;
+        }
+        
     }
 
     void SpawnPowerUp()

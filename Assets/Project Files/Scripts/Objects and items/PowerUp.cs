@@ -16,6 +16,8 @@ public class PowerUp : MonoBehaviour
     {
         if(other.tag == "Player")
         {
+            
+
             EnablePower(other.gameObject);
         }
         DestroyObject();
