@@ -1,16 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class SlowMoPhysics : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D body;
-    Collider2D a,b;
+    
+    [SerializeField] SpriteRenderer mat;
+    public Vector3 punch;
+    public float duration;
+    public int vibrato;
+    public float elasticity;
+
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        body.drag = 20f;
+
+        //mat.DOFade(0, 1.5f);
+        RTL();
     }
 
     // Update is called once per frame
@@ -22,5 +32,15 @@ public class SlowMoPhysics : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         
+    }
+
+    void RTL()
+    {
+        transform.DORotate(new Vector3(0, 0, duration), 2, RotateMode.Fast).OnComplete(() => { RTR(); }); ;
+    }
+
+    void RTR()
+    {
+        transform.DORotate(new Vector3(0, 0, -duration), 2, RotateMode.Fast).OnComplete(() => { RTL(); }) ;
     }
 }

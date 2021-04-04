@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CameraControl : MonoBehaviour
 {
     Camera m_camera;
@@ -49,12 +50,14 @@ public class CameraControl : MonoBehaviour
         Vector3 newPosition = m_centerPoint + m_offset;
 
         transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref m_velocity, m_smoothTime);
+        
     }
 
     void Zoom()
     {
         float newZoom = Mathf.Lerp(m_maxZoom, m_minZoom, GetGreatestDistance() / m_zoomLimiter);
         m_camera.orthographicSize = Mathf.Lerp(m_camera.orthographicSize, newZoom, Time.deltaTime);
+        
     }
 
     float GetGreatestDistance()

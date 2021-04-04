@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PowerUp : MonoBehaviour
 {
     public bool m_invicibility, m_doubleJump, m_multiShot;
-    public float m_powerUpLength = 5f;
+    public float m_powerUpLength = 8f;
 
     public void DestroyObject()
     {

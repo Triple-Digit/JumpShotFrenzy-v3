@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class AgentManager : MonoBehaviour
 {
@@ -17,8 +18,8 @@ public class AgentManager : MonoBehaviour
     [HideInInspector] public int m_currentColor;
     [SerializeField] GameObject m_explosion, m_playerNameHolder;
     [SerializeField] TMP_Text m_playerNameText;
-    [SerializeField] GameObject m_crownBase, m_crownToppers, m_diamond;
-
+    [SerializeField] GameObject m_crownBase, m_crownToppers, m_diamond, m_shield;
+    
 
 
     float m_invincibleCounter;
@@ -99,6 +100,7 @@ public class AgentManager : MonoBehaviour
     public void Invincible(float duration)
     {
         m_invincibleCounter += duration;
+        m_shield.SetActive(true);        
     }
 
     void InvincibilityTimer()
@@ -106,6 +108,10 @@ public class AgentManager : MonoBehaviour
         if(m_invincibleCounter >= 0f)
         {
             m_invincibleCounter -= Time.deltaTime;
+        }
+        else
+        {
+            m_shield.SetActive(false);
         }
     }
 

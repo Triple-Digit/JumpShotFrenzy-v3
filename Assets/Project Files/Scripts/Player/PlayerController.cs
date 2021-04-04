@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     
-    [HideInInspector] public bool m_canControll;
+    public bool m_canControll;
     
     [Header("FXs")]
     [SerializeField] ParticleSystem m_dust, m_muzzleFlash;
@@ -49,6 +49,10 @@ public class PlayerController : MonoBehaviour
     bool m_isShooting;
     [SerializeField] float m_multiShotTimer = 0f;
 
+    [Header("Power Up UI")]
+    [SerializeField] GameObject m_doublejumpUi, m_multishotUi;
+
+
     private PlayerInputs m_PlayerInputs;
 
     private void Awake()
@@ -56,24 +60,6 @@ public class PlayerController : MonoBehaviour
         m_body = GetComponent<Rigidbody2D>();
         m_canControll = true;
 
-        /*
-        m_PlayerInputs = new PlayerInputs();
-
-        m_PlayerInputs.Player.Move.performed -= Move;
-        m_PlayerInputs.Player.Move.performed += Move;
-
-        m_PlayerInputs.Player.Jump.performed -= Jump;
-        m_PlayerInputs.Player.Jump.performed += Jump;
-
-        m_PlayerInputs.Player.Fire.performed -= Shoot;
-        m_PlayerInputs.Player.Fire.performed += Shoot;
-
-
-        m_PlayerInputs.Player.Look.performed -= Look;
-        m_PlayerInputs.Player.Look.performed += Look;
-
-        m_PlayerInputs.Enable();
-        */
     }
 
     private Vector2 m_LookDirection;
@@ -101,18 +87,6 @@ public class PlayerController : MonoBehaviour
         MultiShotTimer();
         FireRate();
         Shooting();
-
-        /*
-        if (m_LookDirection == Vector2.zero)
-        {
-            m_spriteHolder.transform.right = new Vector2(m_direction,0);
-        }
-        else
-        {
-            m_spriteHolder.transform.right = m_LookDirection;
-            m_LastLookDirection = m_LookDirection;
-        }
-        */
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -148,8 +122,7 @@ public class PlayerController : MonoBehaviour
             m_direction *= -1f;
             PlayParticle(m_dust);
         }
-        m_spriteHolder.transform.localScale = new Vector3(m_direction, 1f, 1f);
-        
+        m_spriteHolder.transform.localScale = new Vector3(m_direction, 1f, 1f);        
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -190,6 +163,7 @@ public class PlayerController : MonoBehaviour
     public void ExtraJump(float duration)
     {
         m_extraJumpTimer += duration;
+        m_doublejumpUi.SetActive(true);
     }
 
     void ExtraJumpTimer()
@@ -202,6 +176,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             m_extraJump = 0;
+            m_doublejumpUi.SetActive(false);
         }
     }
 
@@ -260,12 +235,9 @@ public class PlayerController : MonoBehaviour
                 if (m_GroundedPlatform.attachedRigidbody.velocity.y > 0)
                 {
                     m_bounceVel = m_GroundedPlatform.attachedRigidbody.velocity.y;
-                    m_bounceVel = Mathf.Clamp(m_bounceVel, 0f, 10f);
+                    m_bounceVel = Mathf.Clamp(m_bounceVel, 0f, 5f);
                 }
-            }
-            
-            
-            //  m_GroundedPlatform.attachedRigidbody.velocity.y;
+            }            
         }
         else
         {
@@ -277,9 +249,7 @@ public class PlayerController : MonoBehaviour
     {
         if (m_groundCheckPosition == null) return;
         Gizmos.DrawWireSphere(m_groundCheckPosition.position, m_groundCheckRadius);
-    }
-
-    
+    }    
 
     public void Shoot(InputAction.CallbackContext context)
     {
@@ -297,7 +267,7 @@ public class PlayerController : MonoBehaviour
 
     void Shooting()
     {        
-        if (!m_grounded && m_isShooting)
+        if (m_coyoteTime < 0 && m_isShooting)
         {
             if(m_currentAmmo > 0 && m_firerTimer <= 0)
             {
@@ -319,7 +289,7 @@ public class PlayerController : MonoBehaviour
 
     public void MultiShot(float duration)
     {
-        m_multiShotTimer += duration;
+        m_multiShotTimer += duration;        
     }
 
     void MultiShotTimer()
@@ -332,6 +302,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             m_ammo = 1;
+
         }
     }
 

@@ -22,7 +22,7 @@ public class ArenaManager : MonoBehaviour
 
     [Header("Power Up Data")]
     [SerializeField] GameObject[] m_powerUps;
-    [SerializeField] float m_powerUpSpawnRate = 25f;
+    float m_powerUpSpawnRate = 15f;
     float m_spawnPowerUpTimer;
 
     private void Start()
